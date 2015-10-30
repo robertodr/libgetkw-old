@@ -7,12 +7,12 @@
  * \brief
  */
 
-using namespace std;
-
 #include "Getkw.h"
 
 #define TEST_ARRAY if (len > 1) \
-	cout << "Warning, invalid length of 1 for " << name << endl;
+	std::cout << "Warning, invalid length of 1 for " << name << std::endl;
+
+using namespace std;
 
 Getkw::Getkw(const string file, bool _verbose, bool _strict):
 		verbose(_verbose), strict(_strict) {
@@ -84,7 +84,7 @@ void Getkw::setVerbose(bool flag) {
 
 void Getkw::print() const
 {
-	cout << repr(cout) << endl;
+	cout << &repr(cout) << endl;
 }
 
 ostream &Getkw::repr(ostream &o) const

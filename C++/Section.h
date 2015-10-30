@@ -27,6 +27,7 @@ public:
 	virtual ~Section();
 	const Section &getSect(const std::string &path) const;
 	template<class T> const Keyword<T> &getKey(const std::string &path) const;
+	template<class T> const T &get(const std::string &path) const;
 	void addSect(Section &sect);
 	void addSect(Section *);
 	template <class T> void addKey(const Keyword<T> &key);
@@ -38,45 +39,39 @@ public:
 		return s.repr(o);
 	}
 
-	const std::string &getTag() const {
-		return tag;
+	const std::string &getTag() const {return tag;}
+	int getNkeys() const {return nkeys;}
+	int getNsect() const {return nsect;}
+	void setTag(const std::string tag) {this->tag = tag;}
+	void setNkeys(int nkeys) {this->nkeys = nkeys;}
+	void setNsect(int nsect) {this->nsect = nsect;}
+	bool isDefined() const {return isDefd;}
+	std::string getName() const {return name;}
+	void setDefined(bool isDefd) {this->isDefd = isDefd;}
+	void setName(std::string name) {this->name = name;}
+
+	int getInt(const std::string &path) const {return get<int>(path);}
+	double getDbl(const std::string &path) const {return get<double>(path);}
+	bool getBool(const std::string &path) const {return get<bool>(path);}
+	const std::string &getStr(const std::string &path) const {
+        return get<std::string>(path);
+    }
+	const std::vector<int> getIntVec(const std::string &path) const {
+		return get<std::vector<int> >(path);
+	}
+	const std::vector<double> getDblVec(const std::string &path) const {
+		return get<std::vector<double> >(path);
+	}
+	const std::vector<bool> getBoolVec(const std::string &path) const {
+		return get<std::vector<bool> >(path);
+	}
+	const std::vector<std::string> getStrVec(const std::string &path) const {
+		return get<std::vector<std::string> >(path);
+	}
+	const std::vector<std::string> getData(const std::string &path) const {
+		return getStrVec(path);
 	}
 
-	int getNkeys() const {
-		return nkeys;
-	}
-
-	int getNsect() const {
-		return nsect;
-	}
-
-	void setTag(const std::string tag) {
-		this->tag = tag;
-	}
-
-	void setNkeys(int nkeys) {
-		this->nkeys = nkeys;
-	}
-
-	void setNsect(int nsect) {
-		this->nsect = nsect;
-	}
-
-	bool isDefined() const {
-		return isDefd;
-	}
-
-	std::string getName() const {
-		return name;
-	}
-
-	void setDefined(bool isDefd) {
-		this->isDefd = isDefd;
-	}
-
-	void setName(std::string name) {
-		this->name = name;
-	}
 protected:
 	std::string name;
 	std::string tag;

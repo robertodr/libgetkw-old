@@ -32,7 +32,8 @@ public:
 	void pushSection(const std::string &path);
 	void popSection();
 	const Section &getSect(const std::string &path) const;
-	template<class T> const Keyword<T> &getKeyword(const std::string &path) const;
+	template<class T> const Keyword<T> 
+        &getKeyword(const std::string &path) const;
 	template<class T> const T &get(const std::string &path) const;
 
 	int getInt(const std::string &path) const {

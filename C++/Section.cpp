@@ -7,7 +7,6 @@
  * \brief  Container for Sections and Keywords
  */
 
-using namespace std;
 #include <iostream>
 
 #include "Section.h"
@@ -19,7 +18,9 @@ if (A.type() == typeid(const Keyword< T > *))
 #define ANY_TO_CONST_KEY_PTR(A, T) \
 boost::any_cast<const Keyword< T > *>(A)
 
-#define PRINT_FUNC_NAME cout << "@ Section::" << __func__ << endl;
+#define PRINT_FUNC_NAME std::cout << "@ Section::" << __func__ << std::endl;
+
+using namespace std;
 
 Section::Section(const string &_name, const string &_tag) :
 	name(_name) {
@@ -187,6 +188,12 @@ const Keyword<T> &Section::getKey(const string &pathspec) const {
 	return *ANY_TO_CONST_KEY_PTR(iter->second, T);
 }
 
+template<class T>
+const T &Section::get(const string &path) const {
+	const Keyword<T> &key = this->getKey<T>(path);
+	return key.get();
+}
+
 Section *Section::readSect(ifstream &fis) {
 	return 0;
 }
@@ -253,7 +260,7 @@ const Section *Section::traversePath(vector<string> &path,
 			cur = cur + "<" + cur + ">";
 		}
 		if (has_sect(cur)) {
-			map<string, Section *>::const_iterator iter = sects.find(name);
+			map<string, Section *>::const_iterator iter = sects.find(cur);
 			return iter->second;
 		}
 		THROW_GETKW("traversePath: Invalid path, " + pathspec);
@@ -322,7 +329,7 @@ bool Section::has_tag(const string &b) const {
 
 void Section::print() const
 {
-	cout << repr(cout) << endl;
+	cout << &repr(cout) << endl;
 }
 
 ostream &Section::repr(ostream &o) const
@@ -407,3 +414,11 @@ template const Keyword<vector<double> > &Section::getKey(const string &) const;
 template const Keyword<vector<bool> > &Section::getKey(const string &) const;
 template const Keyword<vector<string> > &Section::getKey(const string &) const;
 
+template const int &Section::get<int>(const string&) const;
+template const bool &Section::get<bool>(const string&) const;
+template const double &Section::get<double>(const string&) const;
+template const string &Section::get<string>(const string&) const;
+template const vector<int> &Section::get<vector<int> >(const string&) const;
+template const vector<double> &Section::get<vector<double> >(const string&) const;
+template const vector<bool> &Section::get<vector<bool> >(const string&) const;
+template const vector<string> &Section::get<vector<string> >(const string&) const;
